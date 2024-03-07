@@ -1,9 +1,12 @@
-FROM ubuntu:latest
-MAINTAINER Angello Maggio "angellom@jfrog.com"
-RUN apt-get update -y
-RUN apt-get install -y python-pip python-dev build-essential
-ADD . /flask-app
-WORKDIR /flask-app
-RUN pip install -r requirements.txt
-ENTRYPOINT ["python"]
-CMD ["flask-docker.py"]
+FROM python:latest
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+EXPOSE 5000
+
+CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
